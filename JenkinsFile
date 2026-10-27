@@ -33,6 +33,14 @@ pipeline {
             }
         }
 
+        stage('Test Docker Container') {
+            steps {
+                bat 'if exist docker-output.txt del docker-output.txt'
+                bat 'docker run --rm devops-app:1.0 > docker-output.txt'
+                bat 'findstr /C:"Hello World!" docker-output.txt'
+            }
+        }
+
         stage('Archive Artifact') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar',
@@ -41,4 +49,5 @@ pipeline {
         }
     }
 }
+
 
